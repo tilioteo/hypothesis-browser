@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+	codebase="$$codebase"
+	href="hypothesis-browser.jnlp">
+	<information>
+  		<title>Hypothesis Browser</title>
+  		<vendor>Hypothesis</vendor>
+  		<!-- homepage href="http://magellan.geogr.muni.cz:8080/hypothesis/" /-->
+		<description>Hypothesis client application</description>
+	</information>
+
+	<security>
+		<all-permissions />
+	</security>
+
+	<resources>
+		<j2se version="1.4+" />
+		<jar href="hypothesis-browser.jar" />
+		<property name="maximized" value="true"/>
+		<property name="end_parameter" value="?closeCollector"/>
+		
+		<!--property name="application_url" value="http://magellan.geogr.muni.cz:8080/hypothesis/collector/" /-->
+		<!--property name="token" value="1234567890" /-->
+	</resources>
+
+	<resources os="Windows" arch="x86">
+		<nativelib href="swt-win32-windows-x86.jar" />
+		<jar href="swt-win32-windows-x86.jar" />
+	</resources>
+	
+	<resources os="Windows" arch="x86_64">
+		<nativelib href="swt-win32-windows-x86_64.jar" />
+		<jar href="swt-win32-windows-x86_64.jar" />
+	</resources>
+
+	<resources os="Windows" arch="amd64">
+		<nativelib href="swt-win32-windows-x86_64.jar" />
+		<jar href="swt-win32-windows-x86_64.jar" />
+	</resources>
+
+	<resources os="Linux" arch="ppc64">
+		<nativelib href="swt-gtk-linux-ppc64.jar" />
+		<jar href="swt-gtk-linux-ppc64.jar" />
+	</resources>
+	
+	<resources os="Linux" arch="x86_64">
+		<nativelib href="swt-gtk-linux-x86_64.jar" />
+		<jar href="swt-gtk-linux-x86_64.jar" />
+	</resources>
+
+	<resources os="Linux" arch="amd64">
+		<nativelib href="swt-gtk-linux-x86_64.jar" />
+		<jar href="swt-gtk-linux-x86_64.jar" />
+	</resources>
+
+	<resources os="Linux">
+		<nativelib href="swt-gtk-linux-x86.jar" />
+		<jar href="swt-gtk-linux-x86.jar" />
+	</resources>
+
+	<resources os="SunOS" arch="sparc">
+		<nativelib href="swt-gtk-solaris-sparc.jar" />
+		<jar href="swt-gtk-solaris-sparc.jar" />
+	</resources>
+
+	<resources os="SunOS" arch="x86">
+		<nativelib href="swt-gtk-solaris-x86.jar" />
+		<jar href="swt-gtk-solaris-x86.jar" />
+	</resources>
+	
+	<!-- resources os="Mac OS X" arch="ppc">
+		<nativelib href="swt-macosx-ppc.jar" />
+		<jar href="swt-macosx-ppc.jar" />
+	</resources>
+
+	<resources os="Mac OS X" arch="i386">
+		<nativelib href= "swt-macosx-ppc.jar" />
+		<jar href= "swt-macosx-ppc.jar" />
+	</resources-->
+	
+	<resources os="Mac OS X" arch="x86_64">
+		<nativelib href="swt-macosx-x86_64.jar" />
+		<jar href="swt-macosx-x86_64.jar" />
+	</resources>
+	
+	<application-desc main-class="org.hypothesis.loader.BrowserLoader" />
+</jnlp>
