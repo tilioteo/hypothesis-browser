@@ -54,15 +54,15 @@
                       value="org.hypothesis.browser.Browser"/>
             </manifest>
         </jar>  	
-        <!--signjar destDir="./build"
-                alias="hypothesis" keystore="keystore"
+        <signjar destDir="./build"
+                alias="Tilioteo" keystore="keystore"
                 storepass="obrTod3robue5seuSh"
                 preservelastmodified="true">
             <path>
                 <pathelement location="./build/hypothesis-browser-${version}.jar"/>
             </path>
             <flattenmapper />
-        </signjar-->
+        </signjar>
     </target>
     <target depends="build-jar" name="run">
         <copy includeemptydirs="false" todir="./build">
@@ -83,7 +83,7 @@
     </target>
     <target name="sign-swt">
         <signjar destDir="./build"
-                alias="hypothesis" keystore="keystore"
+                alias="Tilioteo" keystore="keystore"
                 storepass="obrTod3robue5seuSh"
                 preservelastmodified="true">
             <path>
