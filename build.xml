@@ -1,62 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="jar" name="hypothesis-browser">
-	<property environment="env"/>
-	<property name="debuglevel" value="source,lines,vars"/>
-	<property name="target" value="1.5"/>
-	<property name="source" value="1.5"/>
-	
-	<property name="version" value="1.0"/>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="hypothesis-browser">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../Development/eclipse"/>
+    <property name="swt.location" value="../../Documents/workspaces/hypothesis/org.eclipse.swt"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
 
-    <!--path id="Libraries.libraryclasspath">
-        <pathelement location="./lib/jar-in-jar-loader.jar"/>
-    </path-->
-
-	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="./lib/jarjar-1.0.jar"/>
-
-	<!--target name="init">
-		<mkdir dir="./build/classes"/>
-	</target-->
-	<!--target name="clean">
-		<delete dir="./build/classes"/>
-	</target-->
-	<!--target depends="init" name="compile">
-		<javac srcdir="./src" destdir="./build/classes"/>
-		<echo message="${ant.project.name}: ${ant.file}"/>
-		<javac debug="true" debuglevel="${debuglevel}" destdir="./build/classes" source="${source}" target="${target}" encoding="cp1250">
-			<src path="./src"/>
-			<classpath refid="Libraries.libraryclasspath"/>
-		</javac>
-	</target-->
-	<target name="jar">
-		<mkdir dir="./build"/>
-
-		<!-- UI (Stage 1) -->   
-		<jarjar jarfile="./build/tmp/hypothesis-browser-wrapper.jar">
-			<fileset dir="./bin" includes="**/browser/*.class" />
-		</jarjar>
-
-		<!-- UI (Stage 2) -->
-		<jarjar jarfile="./build/tmp/hypothesis-browser-${version}.jar">
-			<manifest>
-				<attribute name="Main-Class" value="org.hypothesis.loader.BrowserLoader" />
-				<attribute name="Class-Path" value="." />
-			</manifest>
-			<fileset dir="./bin" includes="**/loader/*.class" />
-			<fileset dir="./bin" includes="**/browser/Constants.class" />
-			<fileset dir="./build/tmp" includes="hypothesis-browser-wrapper.jar" />
-			<fileset dir="./lib" includes="swt-*.jar" />
-			<zipfileset excludes="META-INF/*.MF" src="lib/jar-in-jar-loader.jar"/>
-		</jarjar>
-		<signjar destDir="./build"
-		    alias="hypothesis" keystore="keystore"
-		    storepass="obrTod3robue5seuSh"
-		    preservelastmodified="true">
-		  <path>
-	        <pathelement location="./build/tmp/hypothesis-browser-${version}.jar"/>
-		  </path>
-		  <flattenmapper />
-		</signjar>	</target>
-	<target depends="jar" name="run">
-		<java jar="./build/hypothesis-browser-${version}.jar" fork="true" args="-Dapplication_url=http://localhost:8080/hypothesis/collector/ -Dtoken=1234567890 -Dend_parameter=?closeCollector -Dmaximized=true"/>
-	</target>
+    <property name="version" value="1.1.0"/>
+    
+    <path id="swt.classpath">
+        <pathelement location="${swt.location}/."/>
+        <pathelement location="${swt.location}/swt.jar"/>
+    </path>
+    <path id="hypothesis-browser.classpath">
+        <pathelement location="bin"/>
+        <path refid="swt.classpath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${swt.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-project" name="build"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="hypothesis-browser.classpath"/>
+        </javac>
+    </target>
+    <target depends="build" name="build-jar">
+        <mkdir dir="./build"/>
+        <jar destfile="./build/hypothesis-browser-${version}.jar">
+    	    <fileset dir="./bin">
+    	        <include name="**/*.class"/>
+    	    </fileset>
+            <manifest>
+                <attribute name="Main-Class"
+                      value="org.hypothesis.browser.Browser"/>
+            </manifest>
+        </jar>  	
+        <!--signjar destDir="./build"
+                alias="hypothesis" keystore="keystore"
+                storepass="obrTod3robue5seuSh"
+                preservelastmodified="true">
+            <path>
+                <pathelement location="./build/hypothesis-browser-${version}.jar"/>
+            </path>
+            <flattenmapper />
+        </signjar-->
+    </target>
+    <target depends="build-jar" name="run">
+        <copy includeemptydirs="false" todir="./build">
+            <fileset dir="${swt.location}">
+                <include name="swt.jar"/>
+            </fileset>
+        </copy>
+        <java
+    	        jar="./build/hypothesis-browser-${version}.jar"
+    	        fork="true">
+            <arg line="-Dapplication_url=http://localhost:8080/hypothesis/collector/ -Dtoken=1234567890 -Dend_parameter=?closeCollector -Dmaximized=true"/>
+            <!--classpath>
+                <pathelement location="./build/hypothesis-browser-${version}.jar"/>
+                <pathelement location="${swt.location}/swt.jar"/>
+            	<path refid="swt.classpath"/>
+            </classpath-->
+        </java>
+    </target>
+    <target name="sign-swt">
+        <signjar destDir="./build"
+                alias="hypothesis" keystore="keystore"
+                storepass="obrTod3robue5seuSh"
+                preservelastmodified="true">
+            <path>
+                <pathelement location="./build/swt-4.3-cocoa-macosx-x86_64.jar"/>
+            </path>
+            <flattenmapper />
+        </signjar>
+    </target>
 </project>
