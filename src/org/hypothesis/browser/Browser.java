@@ -23,12 +23,14 @@ public class Browser {
 	
 	public Browser(Shell shell) {
 		
-		org.eclipse.swt.browser.Browser browser = new org.eclipse.swt.browser.Browser(shell, SWT.NONE);
+		final org.eclipse.swt.browser.Browser browser = new org.eclipse.swt.browser.Browser(shell, SWT.NONE);
 		String url = String.format("%s?%s=%s", params.get(Constants.PARAM_APPLICATION_URL), Constants.PARAM_TOKEN, params.get(Constants.PARAM_TOKEN));
 		browser.setUrl(url);
 		
 		shell.setLayout(new FillLayout());
-		shell.setMaximized(Boolean.parseBoolean(params.get(Constants.PARAM_MAXIMIZED)));
+		boolean maximized = Boolean.parseBoolean(params.get(Constants.PARAM_MAXIMIZED)); 
+		shell.setFullScreen(maximized);
+		//shell.setMaximized(maximized);
 		shell.setText("HypothesisBrowser");
 		
 		// disable right click
@@ -41,14 +43,13 @@ public class Browser {
 			public void changing(LocationEvent arg0) {
 				System.out.println(arg0.location);
 				if (arg0.location.endsWith(params.get(Constants.PARAM_END_PARAMETER))) {
-					System.out.printf("Value '$s' found - application is going to close", params.get(Constants.PARAM_END_PARAMETER));
+					System.out.printf("Value '%s' found - application is going to close", params.get(Constants.PARAM_END_PARAMETER));
 					System.exit(0);
 				}
 			}
 		});
-		
 	}
-	
+		
 	private static void initParameters(String[] args) {
 		//System.err.println("initializing parameters: " + String.valueOf(args.length));
 		params = new HashMap<String, String>();
@@ -57,6 +58,7 @@ public class Browser {
 				String[] splitted = arg.substring(2).split("=");
 				if (splitted.length > 1 && splitted[1].length() > 0) {
 					params.put(splitted[0], splitted[1]);
+					System.out.printf("Parameter found: %s = %s\n", splitted[0], splitted[1]);
 				}
 			}
 		}
