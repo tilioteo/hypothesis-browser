@@ -50,8 +50,8 @@
     	        <include name="**/*.class"/>
     	    </fileset>
             <manifest>
-                <attribute name="Main-Class"
-                      value="org.hypothesis.browser.Browser"/>
+                <attribute name="Application-Name" value="Hypothesis Browser Applet"/>
+                <attribute name="Permissions" value="all-permissions"/>
             </manifest>
         </jar>  	
         <signjar destDir="./build"

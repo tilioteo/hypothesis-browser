@@ -30,7 +30,6 @@ public class Browser {
 		shell.setLayout(new FillLayout());
 		boolean maximized = Boolean.parseBoolean(params.get(Constants.PARAM_MAXIMIZED)); 
 		shell.setFullScreen(maximized);
-		//shell.setMaximized(maximized);
 		shell.setText("HypothesisBrowser");
 		
 		// disable right click
@@ -38,7 +37,6 @@ public class Browser {
 		browser.setMenu(menu);
 
 		browser.addLocationListener(new LocationAdapter() {
-			
 			@Override
 			public void changing(LocationEvent arg0) {
 				System.out.println(arg0.location);
@@ -48,7 +46,8 @@ public class Browser {
 				}
 			}
 		});
-	}
+
+}
 		
 	private static void initParameters(String[] args) {
 		//System.err.println("initializing parameters: " + String.valueOf(args.length));
@@ -84,8 +83,9 @@ public class Browser {
 
 		//System.err.println("creating display");
 		Display display = new Display();
-		System.err.println("creating shell");
-		final Shell shell = new Shell(display, SWT.NONE);
+		//System.err.println("creating shell");
+		// NOTE running on Mac's retina display need SWT.MAX to set fullscreen mode properly
+		final Shell shell = new Shell(display, SystemUtil.isMac() ? SWT.MAX : SWT.NONE);
 		
 		//System.err.println("creating browser");
 		new Browser(shell);
